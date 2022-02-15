@@ -1,6 +1,5 @@
 package ru.netology.web.test;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,13 +8,7 @@ import ru.netology.web.data.DataHelper;
 import ru.netology.web.page.DashboardPage;
 import ru.netology.web.page.LoginPage;
 
-import java.time.Duration;
-import java.util.function.BooleanSupplier;
-
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TransferNegativeTests {
 
@@ -28,11 +21,6 @@ public class TransferNegativeTests {
         var dashboardPage = verificationPage.validVerify(verificationCode);
     }
 
-    @AfterEach
-    public void restoreCards() {
-        DashboardPage.restoreBalance();
-    }
-
     @ParameterizedTest
     @CsvSource(value = {"transferAmountFieldIsEmpty,''",
             "transferAmountIsZero,0",
@@ -41,7 +29,7 @@ public class TransferNegativeTests {
         var dashboardPage = new DashboardPage();
         var transferPage = dashboardPage.firstCardTransfer();
         transferPage.invalidAmountTransfer(amount, DataHelper.getSecondCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
+        DashboardPage.restoreBalance();
     }
 
     @ParameterizedTest
@@ -52,7 +40,7 @@ public class TransferNegativeTests {
         var dashboardPage = new DashboardPage();
         var transferPage = dashboardPage.secondCardTransfer();
         transferPage.invalidAmountTransfer(amount, DataHelper.getFirstCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
+        DashboardPage.restoreBalance();
     }
 
     @Test
@@ -61,7 +49,6 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.firstCardTransfer();
         transferPage.emptyCardNumberTransfer(amount);
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 
     @Test
@@ -70,7 +57,6 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.secondCardTransfer();
         transferPage.emptyCardNumberTransfer(amount);
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 
     @Test
@@ -79,7 +65,6 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.firstCardTransfer();
         transferPage.invalidCardNumberTransfer(amount, DataHelper.getFirstCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 
     @Test
@@ -88,7 +73,6 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.secondCardTransfer();
         transferPage.invalidCardNumberTransfer(amount, DataHelper.getSecondCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 
     @Test
@@ -97,7 +81,6 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.firstCardTransfer();
         transferPage.invalidCardNumberTransfer(amount, DataHelper.getInvalidCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 
     @Test
@@ -106,6 +89,5 @@ public class TransferNegativeTests {
         String amount = String.valueOf(5000);
         var transferPage = dashboardPage.secondCardTransfer();
         transferPage.invalidCardNumberTransfer(amount, DataHelper.getInvalidCardInfo());
-        assertTrue((BooleanSupplier) transferPage.errorMessage.shouldBe(visible).shouldHave(text("Ошибка! Произошла ошибка"), Duration.ofSeconds(15)));
     }
 }

@@ -52,13 +52,13 @@ public class DashboardPage {
         int restoreAmount;
         if (currentBalanceFirstCard > currentBalanceSecondCard) {
             restoreAmount = (currentBalanceFirstCard - currentBalanceSecondCard) / 2;
-            var cardTransferPage = dashboardPage.secondCardTransfer();
-            cardTransferPage.validTransfer(String.valueOf(restoreAmount), DataHelper.getFirstCardInfo());
+            var transferPage = dashboardPage.secondCardTransfer();
+            transferPage.validTransfer(String.valueOf(restoreAmount), DataHelper.getFirstCardInfo());
         }
         if (currentBalanceSecondCard > currentBalanceFirstCard) {
             restoreAmount = (currentBalanceSecondCard - currentBalanceFirstCard) / 2;
-            var cardTransferPage = dashboardPage.firstCardTransfer();
-            cardTransferPage.validTransfer(String.valueOf(restoreAmount), DataHelper.getSecondCardInfo());
+            var transferPage = dashboardPage.firstCardTransfer();
+            transferPage.validTransfer(String.valueOf(restoreAmount), DataHelper.getSecondCardInfo());
         }
     }
 }
